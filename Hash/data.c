@@ -20,9 +20,10 @@ void insertData() {
 
 	printf("Hash Address: %d \n", newControl.controlCode % TAM);
 
-	if (searchCode(newControl.controlCode) != -1)
+	if (searchCode(newControl.controlCode, 0) != -1)
 	{
 		printf("Key %d has already been inserted!", newControl.controlCode);
+		getch();
 		return 0;
 	}
 

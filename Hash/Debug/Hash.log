@@ -1,12 +1,5 @@
-﻿  data.c
-c:\ed2\hash\hash\data.c(23): warning C4013: 'searchCode' indefinido; assumindo extern retornando int
-c:\ed2\hash\hash\data.c(26): warning C4098: 'insertData': função 'void' retornando um valor
-c:\ed2\hash\hash\data.c(29): warning C4013: 'getLastCode' indefinido; assumindo extern retornando int
-c:\ed2\hash\hash\data.c(30): warning C4013: 'setLastCode' indefinido; assumindo extern retornando int
-c:\ed2\hash\hash\data.c(33): warning C4013: 'gets' indefinido; assumindo extern retornando int
-c:\ed2\hash\hash\data.c(17): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\stdio.h(1272): note: consulte a declaração de 'scanf'
-c:\ed2\hash\hash\data.c(56): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _getch. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.16299.0\ucrt\conio.h(452): note: consulte a declaração de 'getch'
-c:\ed2\hash\hash\data.c(81): warning C4716: 'setLastCode': deve retornar um valor
+﻿  hashops.c
+c:\ed2\hash\hash\hashops.c(22): warning C4146: operador menos unário aplicado a tipo unsigned, resultado permanece unsigned
+c:\ed2\hash\hash\hashops.c(53): warning C4146: operador menos unário aplicado a tipo unsigned, resultado permanece unsigned
+c:\ed2\hash\hash\hashops.c(212): warning C4146: operador menos unário aplicado a tipo unsigned, resultado permanece unsigned
   Hash.vcxproj -> C:\ed2\Hash\Debug\Hash.exe

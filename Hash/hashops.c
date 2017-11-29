@@ -93,7 +93,7 @@ void initHash()
 	openIndexFile();
 }
 
-int searchCode(int key)
+int searchCode(int key, int print)
 {
 	Hash hash;
 	int hashAddress = key % 11;
@@ -102,14 +102,18 @@ int searchCode(int key)
 	int currentAddress = hashAddress + 1;
 
 	fseek(index, hashAddress * sizeof(Hash), 0);
+	i++;
 	fread(&hash, sizeof(Hash), 1, index);
-	
 
 	while (j <= 1)
 	{
 		if (hash.code[j] == key)
-			return hashAddress;
+		{
+			if (print)
+				printf("Key %d found, Address %d, %d Seek(s)", key, hashAddress, i);
 
+			return hashAddress;
+		}
 		j++;
 	}
 
@@ -124,12 +128,18 @@ int searchCode(int key)
 			found = -1;
 
 		fseek(index, currentAddress * sizeof(Hash), 0);
+		i++;
 		fread(&hash, sizeof(Hash), 1, index);
 
 		while (j <= 1)
 		{
 			if (hash.code[j] == key)
+			{
+				if (print)
+					printf("Key %d found, Address %d, %d Seek(s)", key, currentAddress, i);
+
 				return currentAddress;
+			}
 
 			j++;
 		}
@@ -144,16 +154,54 @@ int searchCode(int key)
 
 int removeHash(int key)
 {
+	openIndexFile();
+	rewind(index);
 	Hash hash;
+	int hashAddress = key % TAM;
+	int currentAddress = hashAddress + 1;
+	int found = 0;
 
-	int i = 0, j = 0;
+	int j = 0;
 
-	while (i < TAM)
+
+	fseek(index, hashAddress * sizeof(Hash), 0);
+	fread(&hash, sizeof(Hash), 1, index);
+	while (j <= 1)
 	{
+		if (hash.code[j] == key)
+		{
+			hash.code[j] = NIL;
+			hash.fileRRN[j] = NIL;
+
+			if (hash.code[0] == NIL && hash.code[1] == NIL)
+				hash.hashCode = NIL;
+
+			rewind(index);
+			fseek(index, hashAddress * sizeof(Hash), 0);
+			fwrite(&hash, sizeof(Hash), 1, index);
+			closeIndexFile();
+			openIndexFile();
+			return j;
+		}
+		j++;
+	}
+
+	j = 0;
+	rewind(index);
+
+	while (found == 0)
+	{
+		if (fread(&hash, sizeof(Hash), 1, index) == 0)
+			currentAddress = 0;
+
+		if (currentAddress == hashAddress)
+			found = -1;
+
+		fseek(index, currentAddress * sizeof(Hash), 0);
 		fread(&hash, sizeof(Hash), 1, index);
+
 		while (j <= 1)
 		{
-			if (hash.code[j] == key)
 			{
 				hash.code[j] = NIL;
 				hash.fileRRN[j] = NIL;
@@ -161,19 +209,21 @@ int removeHash(int key)
 				if (hash.code[0] == NIL && hash.code[1] == NIL)
 					hash.hashCode = NIL;
 
-				rewind(index);
-				fseek(index, i * sizeof(Hash), 0);
+				fseek(index, -sizeof(Hash), 0);
 				fwrite(&hash, sizeof(Hash), 1, index);
 				closeIndexFile();
 				openIndexFile();
-				return i;
+				return j;
 			}
+
 			j++;
 		}
 
-		i++;
 		j = 0;
+
+		currentAddress++;
 	}
 
-	return -1;
+
+	return found;
 }
